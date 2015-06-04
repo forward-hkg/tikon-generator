@@ -1,12 +1,12 @@
 # Personec Tikon Accounting Transfer File (RWL/TKB) Generator written in PHP
 
-# Requirements
+## Requirements
 - PHP 5.4
 
-# Installation
+## Installation
 ``composer install forward/tikon-generator``
 
-# Usage
+## Usage
 ```php
 
 use Forward\TikonGenerator\Invoice;

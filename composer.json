@@ -1,0 +1,21 @@
+{
+    "name": "forward/tikon-generator",
+    "description": "Personec Tikon Accounting Transfer File (RWL/TKB) Generator",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Petr Myazin",
+            "email": "petr.myazin@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Forward\\TikonGenerator\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4.0"
+    }
+}
