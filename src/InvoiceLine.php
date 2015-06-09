@@ -3,53 +3,314 @@ namespace Forward\TikonGenerator;
 
 class InvoiceLine
 {
-    //TODO: описать поля содержащиеся в строке счёта
+    const DEBET = '+';
+    const CREDIT = '-';
 
     /**
+     * @var \DateTimeInterface
+     * Päivämäärä
+     * ppkkvvvv, jos pp=00 niin avaussaldoksi tilikaudelle kkvvvv
      *
-     * No    Selite    Start Pos    Length    Type    Comp.    Format / Other Considerations
-     * 1    Record Type    1    3    X    P    TKB (constant)
-     * 2    Date    4    8    9    T    ppkkvvvv, if pp=00 so the opening balance of $ fiscal year kkvvvv
-     * 3    VERIFICATIONS    12    2    9
-     * 4    Document Number    14    6    9    T
-     * 5    The document number specifier 1    20    3    9
-     * 6    The document number 2 qualifier    23    3    9
-     * 7    account    26    6    9    P
-     * 8    Place    32    8    X
-     * 9    project    40    8    X
-     * 10    project Type    48    6    X
-     * 11    section    54    4    9        vvkk
-     * 12    Monetary aggregates sign    58    1    X    T    + = Debet,  - = Kredit
-     * 13    amount    59    16    9    T    (14 + 2) 2 viim.sentit, not des.pistettä (incl. VAT = gross)
-     * 14    number sign    75    1    X        +, -
-     * 15    number    76    15    9        (14 + 1) 1 Book by. Parts, no des. points
-     * 16    Legend    91    72    X
-     * 17    Customer number    163    8    9    T
-     * 18    Landing Event    171    2    9    T
-     * 19    The invoice number    173    6    9    T
-     * 20    Type of costs    179    6    X
-     * 21    Group 3    185    8    X
-     * 22    Group 3 species    193    6    X
-     * 23    Group 4    199    8    X
-     * 24    Group 4 species    207    6    X
-     * 25    Number of two-sign    213    1    X        +, -
-     * 26    Quantity 2    214    15    9        (14 + 1) 1 Book by. Parts, no des. points
-     * 27    Number of three-sign    229    1    X        +, -
-     * 28    Quantity 3    230    15    9        (14 + 1) 1 Book by. Parts, no des. points
-     * 29    Company number    245    4    9    P    Company number Tikonissa, compulsory multi-company transfer.
-     * 30    The payment batch identification    249    20    X        Used for liquidating batch identification
-     * 31    The currency exchange    269    3    X    T    Choices: FIM, EUR or blank
-     * in total    271
+     * Date
+     * ppkkvvvv, if pp=00 so the opening balance of $ fiscal year kkvvvv
      *
-     * 9=numerical
-     * X=alphanumeric
-     * P=Required value
-     * T=The use is not mandatory, but desirable
-     *
-     * Fill the numerical fields with leading zeros.
-     * Filling text fields start from the left and the empty space is filled with the chr $ (32) of
-     * The record length of 271 + newline character.
-     * Filename WTAPyyyy.ASC, where yyyy = number of the company (including other file name will do)
+     * Start at pos. 4
+     * Output as 8 digits
      */
+    public $invoiceDate;
+
+    /**
+     * @var int
+     * Tositelaji
+     *
+     * VERIFICATIONS
+     *
+     * Start at pos. 12
+     * Output as 2 digits
+     */
+    public $verifications = 0;
+
+    /**
+     * @var int
+     * Tositenumero
+     *
+     * Start at pos. 14
+     * Output as 6 digits
+     */
+    public $documentNumber = 0;
+
+    /**
+     * @var int
+     * Tositenumeron tarkenne 1
+     *
+     * Start at pos. 20
+     * Output as 3 digits
+     */
+    public $documentNumber1 = 0;
+
+    /**
+     * @var int
+     * Tositenumeron tarkenne 2
+     *
+     * Start at pos. 23
+     * Output as 3 digits
+     */
+    public $documentNumber2 = 0;
+
+    /**
+     * @var int
+     * Tili
+     *
+     * Start at pos. 26
+     * Output as 6 digits
+     */
+    public $account = 0;
+
+    /**
+     * @var string
+     * Kustannuspaikka
+     *
+     * Start at pos. 32
+     * Output as 8 alphanumeric
+     */
+    public $place = '';
+
+    /**
+     * @var string
+     * Projekti
+     *
+     * Start at pos. 40
+     * Output as 8 alphanumeric
+     */
+    public $project = '';
+
+    /**
+     * @var string
+     * Projektilaji
+     *
+     * Start at pos. 48
+     * Output as 6 alphanumeric
+     */
+    public $projectType = '';
+
+    /**
+     * @var string
+     * Jakso
+     * vvkk
+     *
+     * Accounting Period
+     * Format: YYMM
+     *
+     * Start at pos. 54
+     * Output as 4 alphanumeric
+     */
+    public $accountingPeriod = '';
+
+    /**
+     * @var int
+     * Rahamäärän etumerkki
+     * + = Debet,  - = Kredit
+     *
+     * Start at pos. 58
+     * Output as 1 char: + = Debet,  - = Kredit
+     */
+    public $debetOrCredit = self::DEBET;
+
+    /**
+     * @var int
+     * Rahamäärä
+     * (14+2) 2 viim.sentit, ei des.pistettä (sis. Alv=brutto)
+     *
+     * Amount
+     * (14 + 2) 2 viim.sentit, not des.pistettä (incl. VAT = gross)
+     *
+     * Start at pos. 59
+     * Output as 16 digits
+     */
+    public $amount = 0;
+
+    /**
+     * @var string
+     * Määrän etumerkki
+     *
+     * Start at pos. 75
+     * Output as 1 char: + or -
+     */
+    public $numberSign = '+';
+
+    /**
+     * @var int
+     * Määrä
+     * (14+1) 1 viim. osat, ei des. pistettä
+     *
+     * (14 + 1) 1 Book by. Parts, no des. points
+     *
+     * Start at pos. 76
+     * Output as 15 digits
+     */
+    public $number = 0;
+
+    /**
+     * @var string
+     * Selite
+     *
+     * Start at pos. 91
+     * Output as 72 alphanumeric
+     */
+    public $description = '';
+
+    /**
+     * @var int
+     * Asiakasnumero
+     *
+     * Start at pos. 163
+     * Output as 8 digits
+     */
+    public $customerNumber = 0;
+
+    /**
+     * @var int
+     * Laskulaji
+     *
+     * Start at pos. 171
+     * Output as 2 digits
+     */
+    public $landingEvent = 0;
+
+    /**
+     * @var int
+     * Laskunumero
+     *
+     * The invoice number
+     *
+     * Start at pos. 173
+     * Output as 6 digits
+     */
+    public $invoiceNumber = 0;
+
+    /**
+     * @var string
+     * Kustannuslaji
+     *
+     * Start at pos. 179
+     * Output as 6 alphanumeric
+     */
+    public $typeOfCost = '';
+
+    /**
+     * @var string
+     * Ryhmä 3
+     *
+     * Start at pos. 185
+     * Output as 8 alphanumeric
+     */
+    public $group3 = '';
+
+    /**
+     * @var string
+     * RRyhmä 3 laji
+     *
+     * Start at pos. 193
+     * Output as 6 alphanumeric
+     */
+    public $group3species = '';
+
+    /**
+     * @var string
+     * Ryhmä 4
+     *
+     * Start at pos. 199
+     * Output as 8 alphanumeric
+     */
+    public $group4 = '';
+
+    /**
+     * @var string
+     * RRyhmä 4 laji
+     *
+     * Start at pos. 207
+     * Output as 6 alphanumeric
+     */
+    public $group4species = '';
+
+    /**
+     * @var string
+     * Määrä kahden etumerkki
+     *
+     * Start at pos. 213
+     * Output as 1 char: + or -
+     */
+    public $number2Sign = '+';
+
+    /**
+     * @var int
+     * Määrä 2
+     * (14+1) 1 viim. osat, ei des. pistettä
+     *
+     * (14 + 1) 1 Book by. Parts, no des. points
+     *
+     * Start at pos. 214
+     * Output as 15 digits
+     */
+    public $number2 = 0;
+
+    /**
+     * @var string
+     * Määrä kolmen etumerkki
+     *
+     * Start at pos. 229
+     * Output as 1 char: + or -
+     */
+    public $number3Sign = '+';
+
+    /**
+     * @var int
+     * Määrä 3
+     * (14+1) 1 viim. osat, ei des. pistettä
+     *
+     * (14 + 1) 1 Book by. Parts, no des. points
+     *
+     * Start at pos. 230
+     * Output as 15 digits
+     */
+    public $number3 = 0;
+
+    /**
+     * @var int
+     * Yritysnumero
+     * Yritysnumero Tikonissa, pakollinen moniyrityssiirrossa.
+     *
+     * Company Number
+     * Company number Tikonissa, compulsory multi-company transfer.
+     *
+     * Start at pos. 145
+     * Output as 4 digits
+     */
+    public $companyNumber = 0;
+
+    /**
+     * @var int
+     * Maksatuserätunnus
+     * Maksatuksessa käytetty erätunnus
+     *
+     * The payment batch identification
+     * Used for liquidating batch identification
+     *
+     * Start at pos. 149
+     * Output as 20 alphanumeric
+     */
+    public $paymentBatchIdentification = 0;
+
+    /**
+     * @var int
+     * Rahayksikön valuutta
+     * Vaihto ehdot: FIM, EUR tai tyhjä
+     *
+     * Choices: FIM, EUR or blank
+     *
+     * Start at pos. 169
+     * Output as 3 alphanumeric
+     */
+    public $currency = '';
 
 }

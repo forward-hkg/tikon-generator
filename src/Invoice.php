@@ -56,7 +56,7 @@ class Invoice
      * Start at pos. 16
      * Output as 2 digits
      */
-    public $lendingEvent = 0;
+    public $landingEvent = 0;
 
     /**
      * @var int
