@@ -1,5 +1,5 @@
 {
-    "name": "forward/tikon-generator",
+    "name": "forward-hkg/tikon-generator",
     "description": "Personec Tikon Accounting Transfer File (RWL/TKB) Generator",
     "type": "library",
     "license": "MIT",
