@@ -6,6 +6,11 @@ class Invoice
     const TYPE_SALESDECLINE = 'M';
     const TYPE_INVOICE = 'O';
 
+    const DOCUMENTTYPE_INVOICE = 1;
+    const DOCUMENTTYPE_CREDIT = 2;
+    const DOCUMENTTYPE_PENI = 3;
+    const DOCUMENTTYPE_ADVANCE = 4;
+
     const PAYCODE_SALESINVOICE_NORMAL_RECOVERIES = 0;
     const PAYCODE_SALESINVOICE_NOTPRINT_COLLECTION_LETTERS = 1;
 
@@ -291,7 +296,7 @@ class Invoice
     public $basicCurrency = '';
 
     /**
-     * @var int
+     * @var float
      * Lasku perusrahayksiköissä
      * mk- tai euro-määrä, 14 kokonaista, 2 desimaalia, ei desim.erotinta
      *
@@ -317,7 +322,7 @@ class Invoice
     public $invoiceCurrency = '';
 
     /**
-     * @var int
+     * @var float
      * Valuuttakurssi
      * 3 kokonaista, 6 desimaalia, ei desim.erotinta, (Ei käytössä)
      *
@@ -330,7 +335,7 @@ class Invoice
     public $exchangeRate = 0;
 
     /**
-     * @var int
+     * @var float
      * Lasku valuutassa
      * 14 kokonaista, 2 desimaalia, ei desim.erotinta
      *

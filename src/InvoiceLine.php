@@ -117,7 +117,7 @@ class InvoiceLine
     public $debetOrCredit = self::DEBET;
 
     /**
-     * @var int
+     * @var float
      * Rahamäärä
      * (14+2) 2 viim.sentit, ei des.pistettä (sis. Alv=brutto)
      *
