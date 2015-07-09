@@ -17,7 +17,7 @@ class InvoiceLine
      * Start at pos. 4
      * Output as 8 digits
      */
-    public $invoiceDate;
+    public $documentDate;
 
     /**
      * @var int
@@ -136,7 +136,7 @@ class InvoiceLine
      * Start at pos. 75
      * Output as 1 char: + or -
      */
-    public $numberSign = '+';
+    public $numberSign = '';
 
     /**
      * @var int
@@ -240,7 +240,7 @@ class InvoiceLine
      * Start at pos. 213
      * Output as 1 char: + or -
      */
-    public $number2Sign = '+';
+    public $number2Sign = '';
 
     /**
      * @var int
@@ -261,7 +261,7 @@ class InvoiceLine
      * Start at pos. 229
      * Output as 1 char: + or -
      */
-    public $number3Sign = '+';
+    public $number3Sign = '';
 
     /**
      * @var int
@@ -283,7 +283,7 @@ class InvoiceLine
      * Company Number
      * Company number Tikonissa, compulsory multi-company transfer.
      *
-     * Start at pos. 145
+     * Start at pos. 245
      * Output as 4 digits
      */
     public $companyNumber = 0;
@@ -308,7 +308,7 @@ class InvoiceLine
      *
      * Choices: FIM, EUR or blank
      *
-     * Start at pos. 169
+     * Start at pos. 269
      * Output as 3 alphanumeric
      */
     public $currency = '';

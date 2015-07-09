@@ -10,7 +10,7 @@ class TikonGenerator
      */
     public function generate(array $invoices)
     {
-        return implode("\n", array_map([$this, 'generateOne'], $invoices));
+        return implode('', array_map([$this, 'generateOne'], $invoices));
     }
 
     /**
@@ -22,7 +22,7 @@ class TikonGenerator
     {
         $headerText = $this->generateHeaderText($invoice);
         $linesText = implode("\n", array_map([$this, 'generateLineText'], $invoice->lines));
-        return $headerText . "\n" . $linesText;
+        return $headerText . "\n" . $linesText . "\n";
     }
 
     /**
@@ -32,59 +32,59 @@ class TikonGenerator
      */
     protected function generateHeaderText(Invoice $invoice)
     {
-        return 'RWL'
-        . $this->getInt($invoice->companyNumber, 4)
-        . $this->getInt($invoice->customerOrVendorNumber, 8)
-        . $this->getInt($invoice->landingEvent, 2)
-        . $this->getInt($invoice->invoiceNumber, 6)
-        . $this->getInt($invoice->assetsOrLiabilitiesAccountNumber, 6)
-        . $this->getString($invoice->supplierInvoiceNumberShort, 10)
-        . $this->getInt($invoice->verifications, 2)
-        . $this->getInt($invoice->documentNumber, 6)
-        . $this->getInt($invoice->documentNumber1, 3)
-        . $this->getInt($invoice->documentNumber2, 3)
-        . $this->getDateWithZeroes($invoice->documentDate)
-        . $this->getDateWithZeroes($invoice->invoiceDate)
-        . $this->getDateWithZeroes($invoice->dueDate)
-        . $this->getDateWithZeroes($invoice->discountDueDate)
-        . $this->getString($invoice->vendorId, 8)
-        . $this->getString($invoice->vendorName, 72)
-        . $this->getString($invoice->type, 1)
-        . $this->getInt($invoice->documentType, 2)
-        . $this->getInt($invoice->termsOfPayment, 3)
-        . $this->getDecimal($invoice->discountPercent, 3, 1)
-        . $this->getString($invoice->basicCurrency, 3)
-        . $this->getDecimal($invoice->amountInBaseCurrency, 14, 2)
-        . $this->getString($invoice->invoiceCurrency, 3)
-        . $this->getDecimal($invoice->amountInBaseCurrency, 3, 6)
-        . $this->getDecimal($invoice->invoiceAmount, 14, 2)
-        . $this->getBool($invoice->partPayment)
-        . $this->getInt($invoice->payCode, 1)
-        . $this->getInt($invoice->collectionNumbers, 2)
-        . $this->getBool($invoice->interestTheft)
-        . $this->getDateWithZeroes($invoice->interestDate)
-        . $this->getInt($invoice->referenceNumber, 20)
-        . $this->getString($invoice->bankMessage, 70)
-        . $this->getInt($invoice->payCategory, 2)
-        . $this->getInt($invoice->editorBankAccount, 16)
-        . $this->getString($invoice->supplierInvoiceNumber, 20)
-        . $this->getString($invoice->cacheAccount, 6)
-        . $this->getInt($invoice->discountAmoountInLocalCurrency, 16)
-        . $this->getInt($invoice->discountAmoountInOriginalCurrency, 16)
-        . $this->getString($invoice->acceptor, 40)
-        . $this->getString($invoice->workflowBidId, 10)
-        . $this->getString($invoice->iban, 34)
-        . $this->getString($invoice->accountNumberIfNoIban, 34)
-        . $this->getString($invoice->bicSwift, 11)
-        . $this->getString($invoice->bankNameAddress1, 35)
-        . $this->getString($invoice->bankNameAddress2, 35)
-        . $this->getString($invoice->bankNameAddress3, 35)
-        . $this->getString($invoice->bankNameAddress4, 35)
-        . $this->getString($invoice->paymentMethod, 1)
-        . $this->getString($invoice->serviceFee, 1)
-        . $this->getString($invoice->bankMessageRest, 70)
-        . $this->getString($invoice->courseCondition, 14)
-        . $this->getString($invoice->courseCourse, 11);
+        return 'RWL' //1
+        . $this->getInt($invoice->companyNumber, 4) //4
+        . $this->getInt($invoice->customerOrVendorNumber, 8) //8
+        . $this->getInt($invoice->landingEvent, 2) //16
+        . $this->getInt($invoice->invoiceNumber, 6) //18
+        . $this->getInt($invoice->assetsOrLiabilitiesAccountNumber, 6) //24
+        . $this->getString($invoice->supplierInvoiceNumberShort, 10) //30
+        . $this->getInt($invoice->verifications, 2) //40
+        . $this->getInt($invoice->documentNumber, 6) //42
+        . $this->getInt($invoice->documentNumber1, 3) //48
+        . $this->getInt($invoice->documentNumber2, 3) //51
+        . $this->getDateWithZeroes($invoice->documentDate) //54
+        . $this->getDateWithZeroes($invoice->invoiceDate) //64
+        . $this->getDateWithZeroes($invoice->dueDate) //74
+        . $this->getDateWithZeroes($invoice->discountDueDate) //84
+        . $this->getString($invoice->vendorId, 8) //94
+        . $this->getString($invoice->vendorName, 72) //102
+        . $this->getString($invoice->type, 1) //174
+        . $this->getInt($invoice->documentType, 2) //175
+        . $this->getInt($invoice->termsOfPayment, 3) //177
+        . $this->getDecimal($invoice->discountPercent, 3, 1) //180
+        . $this->getString($invoice->basicCurrency, 3) //184
+        . $this->getDecimal($invoice->amountInBaseCurrency, 14, 2) //187
+        . $this->getString($invoice->invoiceCurrency, 3) //203
+        . $this->getDecimal($invoice->exchangeRate, 3, 6) //206
+        . $this->getDecimal($invoice->invoiceAmount, 14, 2) //215
+        . $this->getBool($invoice->partPayment) //231
+        . $this->getInt($invoice->payCode, 1) //232
+        . $this->getInt($invoice->collectionNumbers, 2) //233
+        . $this->getBool($invoice->interestTheft) //235
+        . $this->getDateWithZeroes($invoice->interestDate) //236
+        . $this->getInt($invoice->referenceNumber, 20) //246
+        . $this->getString($invoice->bankMessage, 70) //266
+        . $this->getInt($invoice->payCategory, 2) //336
+        . $this->getInt($invoice->editorBankAccount, 16) //338
+        . $this->getString($invoice->supplierInvoiceNumber, 20) //354
+        . $this->getString($invoice->cacheAccount, 6) //374
+        . $this->getInt($invoice->discountAmoountInLocalCurrency, 16) //380
+        . $this->getInt($invoice->discountAmoountInOriginalCurrency, 16) //396
+        . $this->getString($invoice->acceptor, 40) //412
+        . $this->getString($invoice->workflowBidId, 10) //452
+        . $this->getString($invoice->iban, 34) //462
+        . $this->getString($invoice->accountNumberIfNoIban, 34) //496
+        . $this->getString($invoice->bicSwift, 11) //530
+        . $this->getString($invoice->bankNameAddress1, 35) //541
+        . $this->getString($invoice->bankNameAddress2, 35) //576
+        . $this->getString($invoice->bankNameAddress3, 35) //611
+        . $this->getString($invoice->bankNameAddress4, 35) //646
+        . $this->getString($invoice->paymentMethod, 1) //681
+        . $this->getString($invoice->serviceFee, 1) //682
+        . $this->getString($invoice->bankMessageRest, 70) //683
+        . $this->getString($invoice->courseCondition, 14) //753
+        . $this->getString($invoice->courseCourse, 11); //11
     }
 
     /**
@@ -94,37 +94,37 @@ class TikonGenerator
      */
     protected function generateLineText(InvoiceLine $line)
     {
-        return 'TKB'
-        . $this->getDate($line->invoiceDate)
-        . $this->getInt($line->verifications, 2)
-        . $this->getInt($line->documentNumber, 6)
-        . $this->getInt($line->documentNumber1, 3)
-        . $this->getInt($line->documentNumber2, 3)
-        . $this->getInt($line->account, 6)
-        . $this->getString($line->place, 8)
-        . $this->getString($line->project, 8)
-        . $this->getString($line->projectType, 6)
-        . $this->getString($line->accountingPeriod, 4)
-        . $this->getString($line->debetOrCredit, 1)
-        . $this->getInt($line->amount, 16)
-        . $this->getString($line->numberSign, 1)
-        . $this->getInt($line->number, 15)
-        . $this->getString($line->description, 72)
-        . $this->getInt($line->customerNumber, 8)
-        . $this->getInt($line->landingEvent, 2)
-        . $this->getInt($line->invoiceNumber, 6)
-        . $this->getInt($line->typeOfCost, 6)
-        . $this->getString($line->group3, 8)
-        . $this->getString($line->group3species, 6)
-        . $this->getString($line->group4, 8)
-        . $this->getString($line->group4species, 6)
-        . $this->getString($line->number2Sign, 1)
-        . $this->getDecimal($line->number2, 14, 1)
-        . $this->getString($line->number2Sign, 1)
-        . $this->getDecimal($line->number3, 14, 1)
-        . $this->getInt($line->companyNumber, 4)
-        . $this->getString($line->paymentBatchIdentification, 20)
-        . $this->getString($line->currency, 3);
+        return 'TKB' //1
+        . $this->getDate($line->documentDate) //4
+        . $this->getInt($line->verifications, 2) //12
+        . $this->getInt($line->documentNumber, 6) //14
+        . $this->getInt($line->documentNumber1, 3) //20
+        . $this->getInt($line->documentNumber2, 3) //23
+        . $this->getInt($line->account, 6) //26
+        . $this->getString($line->place, 8) //32
+        . $this->getString($line->project, 8) //40
+        . $this->getString($line->projectType, 6) //48
+        . $this->getString($line->accountingPeriod, 4) //54
+        . $this->getString($line->debetOrCredit, 1) //58
+        . $this->getDecimal($line->amount, 14, 2) //59
+        . $this->getString($line->numberSign, 1) //75
+        . $this->getInt($line->number, 15) //76
+        . $this->getString($line->description, 72) //91
+        . $this->getInt($line->customerNumber, 8) //163
+        . $this->getInt($line->landingEvent, 2) //171
+        . $this->getInt($line->invoiceNumber, 6) //173
+        . $this->getString($line->typeOfCost, 6) //179
+        . $this->getString($line->group3, 8) //185
+        . $this->getString($line->group3species, 6) //193
+        . $this->getString($line->group4, 8) //199
+        . $this->getString($line->group4species, 6) //207
+        . $this->getString($line->number2Sign, 1) //213
+        . $this->getDecimal($line->number2, 14, 1) //214
+        . $this->getString($line->number2Sign, 1) //229
+        . $this->getDecimal($line->number3, 14, 1) //230
+        . $this->getInt($line->companyNumber, 4) //245
+        . $this->getString($line->paymentBatchIdentification, 20) //249
+        . $this->getString($line->currency, 3); //269
 
     }
 
@@ -138,7 +138,7 @@ class TikonGenerator
 
     protected function getDateWithZeroes(\DateTimeInterface $date = null)
     {
-        return $this->getDate($date) . '00';
+        return '00' . $this->getDate($date);
     }
 
     /**
