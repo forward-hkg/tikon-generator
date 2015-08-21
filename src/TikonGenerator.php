@@ -32,7 +32,7 @@ class TikonGenerator
      */
     protected function generateHeaderText(Invoice $invoice)
     {
-        return 'RWL' //1
+        return 'RLW' //1
         . $this->getInt($invoice->companyNumber, 4) //4
         . $this->getInt($invoice->customerOrVendorNumber, 8) //8
         . $this->getInt($invoice->landingEvent, 2) //16
