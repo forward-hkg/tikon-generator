@@ -3,6 +3,8 @@ namespace Forward\TikonGenerator;
 
 class TikonGenerator
 {
+    const SEPARATOR = "\r\n";
+
     /**
      * Generates text representation for array of invoices
      * @param Invoice[] $invoices
@@ -21,8 +23,8 @@ class TikonGenerator
     public function generateOne(Invoice $invoice)
     {
         $headerText = $this->generateHeaderText($invoice);
-        $linesText = implode("\n", array_map([$this, 'generateLineText'], $invoice->lines));
-        return $headerText . "\n" . $linesText . "\n";
+        $linesText = implode(self::SEPARATOR, array_map([$this, 'generateLineText'], $invoice->lines));
+        return $headerText . self::SEPARATOR . $linesText . self::SEPARATOR;
     }
 
     /**
